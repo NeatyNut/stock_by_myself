@@ -1,4 +1,4 @@
-# stock_by_myself
+# stock_by_myself(Personal Project)
 by Internet news, Ai can recommend related stocks
 
 1. App Structure : by Webbrower, select news
