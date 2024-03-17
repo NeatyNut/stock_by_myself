@@ -2,7 +2,8 @@ import "package:flutter/material.dart";
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-
+import 'stockcode.dart';
+import 'bottompopup.dart';
 
 class WebView extends StatelessWidget {
   const WebView({super.key});
@@ -34,7 +35,7 @@ class _WebViewPageState extends State<WebViewPage> {
     }
 
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params);
+        WebViewController.fromPlatformCreationParams(params);
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -84,9 +85,9 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title : const Text("기사 선택기"),
-          actions : <Widget>[NavigationControls(webViewController: _controller)]),
+      appBar: AppBar(title: const Text("기사 선택기"), actions: <Widget>[
+        NavigationControls(webViewController: _controller)
+      ]),
       body: SafeArea(
         bottom: false,
         child: WebViewWidget(controller: _controller),
@@ -100,8 +101,13 @@ class _WebViewPageState extends State<WebViewPage> {
     return FloatingActionButton(
       onPressed: () async {
         final String? url = await _controller.currentUrl();
-        if (mounted && url != null ? url.contains("article"):false) {
-          Navigator.pushNamed(context, '/summary');
+        if (mounted && url != null ? url.contains("article") : false) {
+          return showModalBottomSheet(
+            context: context,
+            builder: (context) => const MyBottomSheet(),
+          );
+          // Navigator.pushNamed(context, '/summary',
+          //     arguments: {"code": StockCode.GetList()[0]}); // 모델에 의한 지정필요
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('해당 url은 기사 url이 아닙니다!')),
